@@ -15,12 +15,22 @@
 
 --   /*********************/
 
---               select sp.season ,  p.Name_firstname,p.Name_lastname  , max(sp.salary) max_salary
---                from salaryofplayer sp join player p 
---                on sp.id=p.id
---                group by season
---                order by season
---   ;
+           
+               
+            select (select p.Name_firstname  from player p where id =s1.id) firstname,
+            (select p.Name_lastname  from player p where id =s1.id) lastname,s1.season,s1.salary
+            from 
+           (  select   sp.season,max(salary)  as m
+                 from salaryofplayer  sp      
+                 group by season
+                 order by salary) newsalary join salaryofplayer s1
+                 on newsalary.season=s1.season and m=s1.salary
+                 group by s1.season
+                 order by s1.season
+               ;
+             
+             
+            
 
 --   /*************************/
 
